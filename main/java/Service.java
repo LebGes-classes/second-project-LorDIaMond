@@ -9,7 +9,7 @@ public class Service implements Serializable {
     private Map<String, SellingPoint> sellingPoints;
     private Map<String, Employee> employees;
     private Map<String, Customer> customers;
-    private List<Product> products = new ArrayList<>();
+    private Map<String, Product> products = new HashMap<>();
     private Finance finance = new Finance();
 
     public Service() {
@@ -19,9 +19,25 @@ public class Service implements Serializable {
         customers = new HashMap<>();
     }
 
+    public Map<String, Warehouse> getAllWarehouses() {
+        return warehouses;
+    }
+    public Map<String, SellingPoint> getAllSellingPoints() {
+        return sellingPoints;
+    }
+    public Map<String, Employee> getAllEmployees() {
+        return employees;
+    }
+    public Map<String, Customer> getAllCustomers() {
+        return customers;
+    }
+    public Finance getFinanceManager() {
+        return finance;
+    }
+
     // Добавить cклад
     public void addWarehouse(Warehouse warehouse) {
-        if (getWarehouses(warehouse.getID()) == null) {
+        if (getWarehouse(warehouse.getID()) == null) {
             warehouses.put(warehouse.getID(), warehouse);
             System.out.println("Вы открыли новый склад");
             warehouse.printInfo();
@@ -29,13 +45,44 @@ public class Service implements Serializable {
             System.out.println("Склад с таким id уже существует");
     }
 
-    public Warehouse getWarehouses(String warehouseID) {
+    public Warehouse getWarehouse(String warehouseID) {
         return warehouses.get(warehouseID);
+    }
+
+    public boolean containsWarehouse(String warehouseId) {
+        return warehouses.containsKey(warehouseId);
+    }
+
+    // Получить товар по id
+    public Product getProductById(String productId) {
+        return products.get(productId);
+    }
+
+    public boolean containsCustomer(String customerId) {
+        return customers.containsKey(customerId);
+    }
+
+    // Добавляем товар в указанный склад
+    public void addProductToWarehouse(String warehouseId, String cellId, Product product, int quantity) {
+        Warehouse warehouse = warehouses.get(warehouseId);
+        if (warehouse != null) {
+            CellOfWarehouse cell = warehouse.getCell(cellId);
+            if (cell != null)
+                cell.addProduct(new Product(product.getId(), product.getName(), quantity, product.getPrice(), product.getCostPrice()));
+        }
+    }
+
+    // Добавляем товар в пункт продаж
+    public void addProductToSalesPoint(String pointId, Product product, int quantity) {
+        SellingPoint point = sellingPoints.get(pointId);
+        if (point != null) {
+            point.addProduct(new Product(product.getId(), product.getName(), quantity, product.getPrice(), product.getCostPrice()));
+        }
     }
 
     // Закрыть склад
     public void removeWarehouse(String warehouseID) {
-        if (getWarehouses(warehouseID) != null) {
+        if (getWarehouse(warehouseID) != null) {
             warehouses.remove(warehouseID);
             System.out.println("Вы закрыли склад");
         }else
@@ -94,12 +141,19 @@ public class Service implements Serializable {
     }
 
     // Родить покупателя
-    public void createCustomer(Customer customer) {
+    public boolean createCustomer(Customer customer) {
+        if (customer == null) {
+            System.out.println("Ошибка: передан пустой объект покупателя.");
+            return false;
+        }
+
         if (getCustomer(customer.getCustomerID()) == null) {
             customers.put(customer.getCustomerID(), customer);
             System.out.println("Вы создали нового покупателя");
+            return true;
         }else
             System.out.println("Покупатель с таким id уже существует");
+            return false;
     }
 
     public Customer getCustomer(String customerID) {
@@ -134,14 +188,14 @@ public class Service implements Serializable {
             return false;
         }
 
-        for (Product p: point.getProducts()) {
-            if (p.getId().equals(productId) && p.getQuantity() >= quantity) {
-                p.setQuantity(p.getQuantity() - quantity);
-                customer.addGood(p, quantity); //Добавляем товар покупателю
-                point.setRevenue(point.getRevenue() + p.getPrice()*quantity); //Увеличиваем доход пункта
-                finance.recordRevenue(p.getPrice(), quantity); // Записываем выручку
-                return true;
-            }
+        Product p = point.getProductById(productId);
+
+        if (p != null && p.getQuantity() >= quantity) {
+            p.setQuantity(p.getQuantity() - quantity);
+            customer.addGood(p, quantity); //Добавляем товар покупателю
+            point.setRevenue(point.getRevenue() + p.getPrice()*quantity); //Увеличиваем доход пункта
+            finance.recordRevenue(p.getPrice(), quantity); // Записываем выручку
+            return true;
         }
         return false;
     }
@@ -291,10 +345,6 @@ public class Service implements Serializable {
         return null;
     }
 
-    public List<Product> getAllProducts() {
-        return new ArrayList<>(products);
-    }
-
     // Импорт из Excel: данные приходят как список Map<колонка, значение>
     public void importProducts(List<Map<String, Object>> data) {
         for (Map<String, Object> row : data) {
@@ -305,12 +355,12 @@ public class Service implements Serializable {
             int costPrice = Integer.parseInt(row.get("Себестоимость").toString());
 
             Product product = new Product(id, name, quantity, price, costPrice);
-            addProduct(product);
+            addProduct(id, product);
         }
     }
 
-    public void addProduct(Product product) {
-        products.add(product);
+    public void addProduct(String id, Product product) {
+        products.put(id, product);
     }
 
 

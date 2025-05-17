@@ -36,9 +36,9 @@ class ServiceTest {
 
     @Test
     void testAddAndRemoveWarehouse() {
-        assertNotNull(service.getWarehouses("WH001"));
+        assertNotNull(service.getWarehouse("WH001"));
         service.removeWarehouse("WH001");
-        assertNull(service.getWarehouses("WH001"));
+        assertNull(service.getWarehouse("WH001"));
     }
 
     @Test
@@ -63,7 +63,7 @@ class ServiceTest {
     void testPurchaseProductToWarehouse() {
         boolean result = service.purchaseProductToWarehouse("WH001", product1, 10);
         assertTrue(result);
-        Product stored = service.getWarehouses("WH001").getProductById("P1");
+        Product stored = service.getWarehouse("WH001").getProductById("P1");
         assertNotNull(stored);
         assertEquals(10, stored.getQuantity());
         assertEquals(800, service.getFinance().getTotalExpenses()); // 10 * 80
@@ -73,7 +73,7 @@ class ServiceTest {
     void testMoveProductFromWarehouseToSellingPoint() {
         service.purchaseProductToWarehouse("WH001", product1, 10);
 
-        Storage from = service.getWarehouses("WH001");
+        Storage from = service.getWarehouse("WH001");
         Storage to = service.getSellingPoint("SP001");
 
         boolean moved = service.moveProduct(from, to, "P1", 5);
@@ -91,7 +91,7 @@ class ServiceTest {
     @Test
     void testSellProduct() {
         service.purchaseProductToWarehouse("WH001", product1, 10);
-        service.moveProduct(service.getWarehouses("WH001"), service.getSellingPoint("SP001"), "P1", 5);
+        service.moveProduct(service.getWarehouse("WH001"), service.getSellingPoint("SP001"), "P1", 5);
 
         boolean sold = service.sellProduct("SP001", "P1", 3, "C1");
         assertTrue(sold);
@@ -134,7 +134,7 @@ class ServiceTest {
     @Test
     void testAssignResponsiblePerson() {
         service.changeResponsiblePerson(service.findResponsibleUnit("WH001"), "E1");
-        assertNull(service.getWarehouses("WH001").getResponsible());
+        assertNull(service.getWarehouse("WH001").getResponsible());
 
         service.hireEmployee(employee1, "SP001");
         service.changeResponsiblePerson(service.findResponsibleUnit("SP001"), "E1");

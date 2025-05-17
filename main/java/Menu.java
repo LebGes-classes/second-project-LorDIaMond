@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +85,8 @@ public class Menu implements Serializable {
         System.out.println("12 - Информация о складе"); //Обо всех или об одном определенном. Далее о товаре
         System.out.println("13 - Информация о пункте продаж"); //Обо всех или об одном определенном. Далее о товаре, о доходе, o сотрудниках.
         System.out.println("14 - Родить покупателя");
+        System.out.println("15 - Прочитать с Excel");
+        System.out.println("16 - Сохранить информацию в Json");
         System.out.println("0 - Выход");
         System.out.print("Выберите действие: ");
     }
@@ -285,7 +288,7 @@ public class Menu implements Serializable {
             case 2:
                 System.out.println("Напишите id интересующего вас склада");
                 String warehouseID = scanner.nextLine();
-                Warehouse warehouse = inventoryService.getWarehouses(warehouseID);
+                Warehouse warehouse = inventoryService.getWarehouse(warehouseID);
                 warehouse.printInfo();
                 break;
             default:
@@ -328,29 +331,131 @@ public class Menu implements Serializable {
 
     // Загрузка данных из Excel
     private static void loadFromExcel() {
-        System.out.print("Введите путь к файлу Excel: ");
-        String excelPath = scanner.nextLine();
-        System.out.print("Введите название листа: ");
-        String sheetName = scanner.nextLine();
-
         try {
-            List<Map<String, Object>> data = ExcelReader.readExcel(excelPath, sheetName);
-            inventoryService.importProducts(data);
-            System.out.println("Данные успешно загружены.");
+
+            // 1. Загружаем товары
+            List<Map<String, Object>> productData = ExcelReader.readExcel("Products");
+            for (Map<String, Object> row : productData) {
+                String id = (String) row.get("ID");
+                String name = (String) row.get("НАЗВАНИЕ");
+                int price = toIntSafe(row.get("ЦЕНА"));
+                int costPrice = toIntSafe(row.get("СЕБЕСТОИМОСТЬ"));
+                int quantity = toIntSafe(row.get("КОЛИЧЕСТВО"));
+
+                Product product = new Product(id, name, price, costPrice, quantity);
+                inventoryService.addProduct(id, product);
+            }
+
+            // 2. Загружаем склады и ячейки
+            List<Map<String, Object>> warehouseData = ExcelReader.readExcel("Warehouses");
+            for (Map<String, Object> row : warehouseData) {
+                String warehouseId = (String) row.get("WAREHOUSE_ID");
+                String cellId = (String) row.get("CELL_ID");
+                String productId = (String) row.get("PRODUCT_ID");
+                int quantity = toIntSafe(row.get("QUANTITY"));
+
+                if (!inventoryService.containsWarehouse(warehouseId)) {
+                    Warehouse warehouse = new Warehouse(warehouseId, 100); // по умолчанию 100 ячеек
+                    inventoryService.addWarehouse(warehouse);
+                }
+
+                Product product = inventoryService.getProductById(productId);
+                if (product != null) {
+                    inventoryService.addProductToWarehouse(warehouseId, cellId, product, quantity);
+                }
+            }
+
+            // 3. Загружаем пункты продаж
+            List<Map<String, Object>> sellingPointData = ExcelReader.readExcel("SellingPoints");
+            for (Map<String, Object> row : sellingPointData) {
+                String pointId = (String) row.get("ID");
+                String productId = (String) row.get("PRODUCT_ID");
+                int quantity = toIntSafe(row.get("QUANTITY"));
+
+                SellingPoint point = new SellingPoint(pointId);
+                inventoryService.addSellingPoint(point);
+
+                Product product = inventoryService.getProductById(productId);
+                if (product != null) {
+                    inventoryService.addProductToSalesPoint(pointId, product, quantity);
+                }
+            }
+
+            // 4. Загружаем сотрудников
+            List<Map<String, Object>> employeeData = ExcelReader.readExcel("Employees");
+            for (Map<String, Object> row : employeeData) {
+                String empId = (String) row.get("EMPLOYEE_ID");
+                String name = (String) row.get("NAME");
+                String position = (String) row.get("POSITION");
+                String pointId = (String) row.get("POINT_ID");
+
+                Employee employee = new Employee(empId, name, position, false);
+                inventoryService.hireEmployee(employee, pointId);
+            }
+
+            // 5. Загружаем покупателей
+            List<Map<String, Object>> customerData = ExcelReader.readExcel("Customers");
+            for (Map<String, Object> row : customerData) {
+                String customerId = (String) row.get("CUSTOMER_ID");
+                String name = (String) row.get("NAME");
+                String productId = (String) row.get("PRODUCT_ID");
+                int quantity = toIntSafe(row.get("QUANTITY"));
+
+                if (!inventoryService.containsCustomer(customerId)) {
+                    Customer customer = new Customer(name, customerId);
+                    inventoryService.createCustomer(customer);
+
+                    Product product = inventoryService.getProductById(productId);
+                    if (product != null && quantity > 0) {
+                        customer.addGood(product, quantity);
+                    }
+                }
+            }
+
+            System.out.println("Данные успешно загружены из Excel.");
+
         } catch (Exception e) {
-            System.out.println("Ошибка при загрузке данных: " + e.getMessage());
+            System.out.println("Ошибка при загрузке данных из Excel: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private static void saveToJson() {
-        System.out.print("Введите путь для сохранения JSON: ");
-        String jsonPath = scanner.nextLine();
+
+        AppState state = new AppState(
+                inventoryService.getAllWarehouses(),
+                inventoryService.getAllSellingPoints(),
+                inventoryService.getAllEmployees(),
+                inventoryService.getAllCustomers(),
+                inventoryService.getFinanceManager()
+        );
 
         try {
-            JsonWriter.writeToJson(inventoryService.getAllProducts(), jsonPath);
-            System.out.println("Данные успешно сохранены в JSON.");
-        } catch (Exception e) {
-            System.out.println("Ошибка при сохранении: " + e.getMessage());
+            JsonWriter.writeToJson(state);
+            System.out.println("Данные успешно сохранены.");
+        } catch (IOException e) {
+            System.out.println("Ошибка при сохранении данных: " + e.getMessage());
+        }
+    }
+
+    // Вспомогательный метод для loadfromExcel для перевода чисел в целочисленный тип
+    private static int toIntSafe(Object obj) {
+        if (obj == null) return 0;
+
+        if (obj instanceof Integer i) {
+            return i;
+        } else if (obj instanceof Double d) {
+            return d.intValue();
+        } else if (obj instanceof String s && !s.isEmpty()) {
+            try {
+                return Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                System.out.println("Не удалось преобразовать строку в число: " + s);
+                return 0;
+            }
+        } else {
+            System.out.println("Неподдерживаемый тип значения: " + obj.getClass());
+            return 0;
         }
     }
 }

@@ -9,6 +9,10 @@ public class CellOfWarehouse implements Serializable {
         this.product = null;
     }
 
+    public boolean isEmpty() {
+        return product == null;
+    }
+
     public void addProduct(Product product) {
         this.product = product;
     }

@@ -1,0 +1,386 @@
+{
+  "warehouses": {
+    "null": {
+      "cells": {
+        "CELL-1": {
+          "cellNumber": "CELL-1",
+          "product": {
+            "id": "P1",
+            "name": "Книга",
+            "quantity": 40,
+            "price": 300,
+            "costPrice": 50
+          }
+        },
+        "CELL-2": {
+          "cellNumber": "CELL-2",
+          "product": {
+            "id": "P2",
+            "name": "Журнал",
+            "quantity": 75,
+            "price": 100,
+            "costPrice": 125
+          }
+        },
+        "CELL-3": {
+          "cellNumber": "CELL-3"
+        },
+        "CELL-4": {
+          "cellNumber": "CELL-4"
+        },
+        "CELL-5": {
+          "cellNumber": "CELL-5"
+        },
+        "CELL-6": {
+          "cellNumber": "CELL-6"
+        },
+        "CELL-7": {
+          "cellNumber": "CELL-7"
+        },
+        "CELL-8": {
+          "cellNumber": "CELL-8"
+        },
+        "CELL-9": {
+          "cellNumber": "CELL-9"
+        },
+        "CELL-10": {
+          "cellNumber": "CELL-10"
+        },
+        "CELL-11": {
+          "cellNumber": "CELL-11"
+        },
+        "CELL-12": {
+          "cellNumber": "CELL-12"
+        },
+        "CELL-13": {
+          "cellNumber": "CELL-13"
+        },
+        "CELL-14": {
+          "cellNumber": "CELL-14"
+        },
+        "CELL-15": {
+          "cellNumber": "CELL-15"
+        },
+        "CELL-16": {
+          "cellNumber": "CELL-16"
+        },
+        "CELL-17": {
+          "cellNumber": "CELL-17"
+        },
+        "CELL-18": {
+          "cellNumber": "CELL-18"
+        },
+        "CELL-19": {
+          "cellNumber": "CELL-19"
+        },
+        "CELL-20": {
+          "cellNumber": "CELL-20"
+        },
+        "CELL-21": {
+          "cellNumber": "CELL-21"
+        },
+        "CELL-22": {
+          "cellNumber": "CELL-22"
+        },
+        "CELL-23": {
+          "cellNumber": "CELL-23"
+        },
+        "CELL-24": {
+          "cellNumber": "CELL-24"
+        },
+        "CELL-25": {
+          "cellNumber": "CELL-25"
+        },
+        "CELL-26": {
+          "cellNumber": "CELL-26"
+        },
+        "CELL-27": {
+          "cellNumber": "CELL-27"
+        },
+        "CELL-28": {
+          "cellNumber": "CELL-28"
+        },
+        "CELL-29": {
+          "cellNumber": "CELL-29"
+        },
+        "CELL-30": {
+          "cellNumber": "CELL-30"
+        },
+        "CELL-31": {
+          "cellNumber": "CELL-31"
+        },
+        "CELL-32": {
+          "cellNumber": "CELL-32"
+        },
+        "CELL-33": {
+          "cellNumber": "CELL-33"
+        },
+        "CELL-34": {
+          "cellNumber": "CELL-34"
+        },
+        "CELL-35": {
+          "cellNumber": "CELL-35"
+        },
+        "CELL-36": {
+          "cellNumber": "CELL-36"
+        },
+        "CELL-37": {
+          "cellNumber": "CELL-37"
+        },
+        "CELL-38": {
+          "cellNumber": "CELL-38"
+        },
+        "CELL-39": {
+          "cellNumber": "CELL-39"
+        },
+        "CELL-40": {
+          "cellNumber": "CELL-40"
+        },
+        "CELL-41": {
+          "cellNumber": "CELL-41"
+        },
+        "CELL-42": {
+          "cellNumber": "CELL-42"
+        },
+        "CELL-43": {
+          "cellNumber": "CELL-43"
+        },
+        "CELL-44": {
+          "cellNumber": "CELL-44"
+        },
+        "CELL-45": {
+          "cellNumber": "CELL-45"
+        },
+        "CELL-46": {
+          "cellNumber": "CELL-46"
+        },
+        "CELL-47": {
+          "cellNumber": "CELL-47"
+        },
+        "CELL-48": {
+          "cellNumber": "CELL-48"
+        },
+        "CELL-49": {
+          "cellNumber": "CELL-49"
+        },
+        "CELL-50": {
+          "cellNumber": "CELL-50"
+        },
+        "CELL-51": {
+          "cellNumber": "CELL-51"
+        },
+        "CELL-52": {
+          "cellNumber": "CELL-52"
+        },
+        "CELL-53": {
+          "cellNumber": "CELL-53"
+        },
+        "CELL-54": {
+          "cellNumber": "CELL-54"
+        },
+        "CELL-55": {
+          "cellNumber": "CELL-55"
+        },
+        "CELL-56": {
+          "cellNumber": "CELL-56"
+        },
+        "CELL-57": {
+          "cellNumber": "CELL-57"
+        },
+        "CELL-58": {
+          "cellNumber": "CELL-58"
+        },
+        "CELL-59": {
+          "cellNumber": "CELL-59"
+        },
+        "CELL-60": {
+          "cellNumber": "CELL-60"
+        },
+        "CELL-61": {
+          "cellNumber": "CELL-61"
+        },
+        "CELL-62": {
+          "cellNumber": "CELL-62"
+        },
+        "CELL-63": {
+          "cellNumber": "CELL-63"
+        },
+        "CELL-64": {
+          "cellNumber": "CELL-64"
+        },
+        "CELL-65": {
+          "cellNumber": "CELL-65"
+        },
+        "CELL-66": {
+          "cellNumber": "CELL-66"
+        },
+        "CELL-67": {
+          "cellNumber": "CELL-67"
+        },
+        "CELL-68": {
+          "cellNumber": "CELL-68"
+        },
+        "CELL-69": {
+          "cellNumber": "CELL-69"
+        },
+        "CELL-70": {
+          "cellNumber": "CELL-70"
+        },
+        "CELL-71": {
+          "cellNumber": "CELL-71"
+        },
+        "CELL-72": {
+          "cellNumber": "CELL-72"
+        },
+        "CELL-73": {
+          "cellNumber": "CELL-73"
+        },
+        "CELL-74": {
+          "cellNumber": "CELL-74"
+        },
+        "CELL-75": {
+          "cellNumber": "CELL-75"
+        },
+        "CELL-76": {
+          "cellNumber": "CELL-76"
+        },
+        "CELL-77": {
+          "cellNumber": "CELL-77"
+        },
+        "CELL-78": {
+          "cellNumber": "CELL-78"
+        },
+        "CELL-79": {
+          "cellNumber": "CELL-79"
+        },
+        "CELL-80": {
+          "cellNumber": "CELL-80"
+        },
+        "CELL-81": {
+          "cellNumber": "CELL-81"
+        },
+        "CELL-82": {
+          "cellNumber": "CELL-82"
+        },
+        "CELL-83": {
+          "cellNumber": "CELL-83"
+        },
+        "CELL-84": {
+          "cellNumber": "CELL-84"
+        },
+        "CELL-85": {
+          "cellNumber": "CELL-85"
+        },
+        "CELL-86": {
+          "cellNumber": "CELL-86"
+        },
+        "CELL-87": {
+          "cellNumber": "CELL-87"
+        },
+        "CELL-88": {
+          "cellNumber": "CELL-88"
+        },
+        "CELL-89": {
+          "cellNumber": "CELL-89"
+        },
+        "CELL-90": {
+          "cellNumber": "CELL-90"
+        },
+        "CELL-91": {
+          "cellNumber": "CELL-91"
+        },
+        "CELL-92": {
+          "cellNumber": "CELL-92"
+        },
+        "CELL-93": {
+          "cellNumber": "CELL-93"
+        },
+        "CELL-94": {
+          "cellNumber": "CELL-94"
+        },
+        "CELL-95": {
+          "cellNumber": "CELL-95"
+        },
+        "CELL-96": {
+          "cellNumber": "CELL-96"
+        },
+        "CELL-97": {
+          "cellNumber": "CELL-97"
+        },
+        "CELL-98": {
+          "cellNumber": "CELL-98"
+        },
+        "CELL-99": {
+          "cellNumber": "CELL-99"
+        },
+        "CELL-100": {
+          "cellNumber": "CELL-100"
+        }
+      },
+      "capacity": 100
+    }
+  },
+  "sellingPoints": {
+    "SP001": {
+      "pointID": "SP001",
+      "products": [
+        {
+          "id": "P1",
+          "name": "Книга",
+          "quantity": 5,
+          "price": 300,
+          "costPrice": 50
+        },
+        {
+          "id": "P2",
+          "name": "Журнал",
+          "quantity": 5,
+          "price": 100,
+          "costPrice": 125
+        }
+      ],
+      "employees": [
+        {
+          "employeeID": "E1",
+          "name": "Иванов Иван Иваныч",
+          "position": "Менеджер",
+          "isResponsible": false
+        },
+        {
+          "employeeID": "E2",
+          "name": "Павлов Роман",
+          "position": "Продавец-скоро безработный",
+          "isResponsible": false
+        }
+      ],
+      "revenue": 0
+    }
+  },
+  "employees": {
+    "E1": {
+      "employeeID": "E1",
+      "name": "Иванов Иван Иваныч",
+      "position": "Менеджер",
+      "isResponsible": false
+    },
+    "E2": {
+      "employeeID": "E2",
+      "name": "Павлов Роман",
+      "position": "Продавец-скоро безработный",
+      "isResponsible": false
+    }
+  },
+  "customers": {
+    "C1": {
+      "customerID": "C1",
+      "name": "Викторович",
+      "goods": {
+        "Товар{id\u003d\u0027P1\u0027, название \u003d\u0027Книга\u0027, количество \u003d500\u0027, цена \u003d300}": 5
+      }
+    }
+  },
+  "finance": {
+    "totalExpenses": 0,
+    "totalRevenue": 0
+  }
+}

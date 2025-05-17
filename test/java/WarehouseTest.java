@@ -31,9 +31,9 @@ class WarehouseTest {
         // Проверяем, что все ячейки созданы
         Map<String, CellOfWarehouse> cells = warehouse.getCells();
         assertEquals(3, cells.size());
-        assertTrue(cells.containsKey("1"));
-        assertTrue(cells.containsKey("2"));
-        assertTrue(cells.containsKey("3"));
+        assertTrue(cells.containsKey("CELL-1"));
+        assertTrue(cells.containsKey("CELL-2"));
+        assertTrue(cells.containsKey("CELL-3"));
     }
 
     @Test

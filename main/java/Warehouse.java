@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Warehouse implements Storage, Responsibility, Serializable {
@@ -10,11 +11,11 @@ public class Warehouse implements Storage, Responsibility, Serializable {
 
     public Warehouse(String warehouseID, int capacity) {
         this.warehouseID = warehouseID;
-        this.cells = new HashMap<>();
+        this.cells = new LinkedHashMap<>();
         this.capacity = capacity;
 
         for (int i = 1; i <= capacity; i++) {
-            String cellID = "" + i;
+            String cellID = "CELL-" + i;
             cells.put(cellID, new CellOfWarehouse(cellID));
         }
     }
@@ -27,12 +28,13 @@ public class Warehouse implements Storage, Responsibility, Serializable {
         return warehouseID;
     }
 
+    // Назначить ответственное лицо
     @Override
     public void assignResponsible(Employee employee) {
         if (responsible != null) {
             responsible.setResponsible(false); // Снимаем старое лицо
         }
-        this.responsible = employee;
+        this.responsible = employee; // Назначаем новое
         employee.setResponsible(true);
     }
 
@@ -50,6 +52,18 @@ public class Warehouse implements Storage, Responsibility, Serializable {
         return cells;
     }
 
+    public Map<String, CellOfWarehouse> getNonEmptyEntries() {
+        Map<String, CellOfWarehouse> nonEmpty = new HashMap<>();
+        for (Map.Entry<String, CellOfWarehouse> entry : cells.entrySet()) {
+            if (!entry.getValue().isEmpty()) {
+                nonEmpty.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return nonEmpty;
+    }
+
+
+    // Товар склада по его id
     @Override
     public Product getProductById(String productId) {
         for (CellOfWarehouse cell : cells.values()) {
@@ -62,6 +76,7 @@ public class Warehouse implements Storage, Responsibility, Serializable {
         return null;
     }
 
+    // Удалить некоторе количество товара
     @Override
     public boolean removeProduct(String productId, int quantity) {
         for (CellOfWarehouse cell : cells.values()) {
@@ -77,14 +92,23 @@ public class Warehouse implements Storage, Responsibility, Serializable {
         return false;
     }
 
+    // Добавить товар на склад
     @Override
-    public void addProduct(Product product) {
-        // найти или создать ячейку
-        CellOfWarehouse cell = cells.getOrDefault("DEFAULT", new CellOfWarehouse("DEFAULT"));
-        cell.addProduct(product);
-        cells.putIfAbsent("DEFAULT", cell);
+    public boolean addProduct(Product product) {
+        if (product == null) return false;
+
+        CellOfWarehouse cell = findFirstEmptyCell();
+        if (cell != null) {
+            cell.addProduct(product);
+            System.out.println("Товар успешно добавлен на склад");
+            return true;
+        }else {
+            System.out.println("Нет свободных ячеек для добавления товара.");
+            return false;
+        }
     }
 
+    // Метод для закупки товара
     public boolean purchaseProduct(Product product, int quantity) {
         if (product == null || quantity <= 0)
             return false;
@@ -120,6 +144,7 @@ public class Warehouse implements Storage, Responsibility, Serializable {
         return null; // Если все ячейки заняты
     }
 
+    // Вывод информации о складе
     public void printInfo() {
         System.out.println("Склад ID: " + getWarehouseID() + ", ячеек: " + getCapacity());
         for (CellOfWarehouse cell : cells.values()) {
@@ -128,5 +153,9 @@ public class Warehouse implements Storage, Responsibility, Serializable {
                 System.out.println("Товар: " + cell.getProduct().getName() + ", количество: " + cell.getProduct().getQuantity());
             }
         }
+    }
+
+    public CellOfWarehouse getCell(String cellId) {
+        return cells.get(cellId);
     }
 }

@@ -31,8 +31,9 @@ public class SellingPoint implements Storage, Responsibility, Serializable {
     }
 
     @Override
-    public void addProduct(Product product) {
+    public boolean addProduct(Product product) {
         products.add(product);
+        return true;
     }
 
     public List<Product> getProducts() {
@@ -64,6 +65,7 @@ public class SellingPoint implements Storage, Responsibility, Serializable {
         employees.remove(employee);
     }
 
+    // Найти товар по его id
     @Override
     public Product getProductById(String productId) {
         return products.stream()
@@ -72,11 +74,13 @@ public class SellingPoint implements Storage, Responsibility, Serializable {
                 .orElse(null);
     }
 
+    // Удалить некоторое количество товара
     @Override
     public boolean removeProduct(String productId, int quantity) {
         Product p = getProductById(productId);
         if (p != null && p.getQuantity() >= quantity) {
             p.setQuantity(p.getQuantity() - quantity);
+            // если товара не осталось, то удаляем насовсем
             if (p.getQuantity() == 0) {
                 products.remove(p);
             }
